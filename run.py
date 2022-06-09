@@ -62,10 +62,16 @@ def start_battlequips():
     battlequips_game.print_board()
 
     while battlequips_game.life > 0:
+        if len(battlequips_game.ship_coords) == 0:
+            print("Well done! You've sunk all the ships!")
+            break
         coordinates = input("What co-ordinates would you like to attack? (e.g. B3, J7) ")
         if validator(coordinates):
             if coordinates.upper() in battlequips_game.ship_coords:
                 battlequips_game.update_board(coordinates, "X")
+                print(battlequips_game.ship_coords)
+                battlequips_game.ship_coords.remove(coordinates.upper())
+                battlequips_game.life = 10
                 print("Hit! Keep firing!")
             else:
                 battlequips_game.life = battlequips_game.life - 1
@@ -74,6 +80,8 @@ def start_battlequips():
             battlequips_game.print_board()
         else:
             print("Oops! Invalid values - please choose between A1-J10.")
+    if battlequips_game.life == 0: 
+        print("Uh-oh! You're out of lives. Please start again.")
 
 
 def get_ship_coords():
@@ -131,6 +139,19 @@ def run_game():
     Start screen for Battlequips.
     """
     print("Hello! Welcome to BattleQuips!")
+    print("  ____        _   _   _      \n" +
+          " |  _ \      | | | | | |     \n" +
+          " | |_) | __ _| |_| |_| | ___ \n" +
+          " |  _ < / _` | __| __| |/ _ \ \n" +
+          " | |_) | (_| | |_| |_| |  __/\n" +
+          " |____/ \__,_|\__|\__|_|\___|\n" +
+          "  / __ \      (_)            \n" +
+          " | |  | |_   _ _ _ __  ___   \n" +
+          " | |  | | | | | | '_ \/ __|  \n" +
+          " | |__| | |_| | | |_) \__ \  \n" +
+          "  \___\_\\__,_ |_|  ._/|___/  \n" +
+          "                | |          \n" +
+          "                |_|          ")
 
     is_game_running = True
 
