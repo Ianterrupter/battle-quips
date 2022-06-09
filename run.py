@@ -1,23 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
 
-SCOPE = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
-    ]
-
-CREDS = Credentials.from_service_account_file("creds.json")
-SCOPED_CREDS = CREDS.with_scopes(SCOPE)
-GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open("battle_quips")
-
-quips = SHEET.worksheet("quips")
-
-data = quips.get_all_values()
-
-print(data)
-
 
 class Battlequips():
     """
@@ -25,9 +8,10 @@ class Battlequips():
     """
     life = 10
 
-    def __init__(self, grid_size, num_ships):
+    def __init__(self, grid_size, num_ships, ship_coords):
         self.grid_size = grid_size
         self.num_ships = num_ships
+        self.ship_coords = ship_coords
 
     def description(self):
         """
@@ -64,28 +48,67 @@ def start_battlequips():
     Starts BattleQuips game
     """
     # TODO: add feature to ask user for grid size and number of ships
-    battlequips_game = Battlequips(10, 5)
+
+    battlequips_game = Battlequips(10, 5, get_ship_coords())
     battlequips_game.print_board()
 
     while battlequips_game.life > 0:
         coordinates = input("What co-ordinates would you like to attack? (e.g. B3, J7) ")
         validator(coordinates)
+        print(validator(coordinates))
+
         # Check if valid input, hit or miss
         # If hit; battlequips_game.life = 10
         # If miss; battlequips_game.life--
 
+
+def get_ship_coords():
+    """
+    Retrieves ship co-ordinates from Google Sheets
+    """
+    SCOPE = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive.file",
+        "https://www.googleapis.com/auth/drive"
+        ]
+
+    CREDS = Credentials.from_service_account_file("creds.json")
+    SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+    GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+    SHEET = GSPREAD_CLIENT.open("battle_quips")
+
+    quips = SHEET.worksheet("quips")
+
+    data = quips.col_values(3)
+
+    all_coords = []
+    for coords in data:
+        all_coords += coords.split(",")
+    return all_coords
+    
 
 def validator(coordinates):
     """
     Validates co-ordinates
     """
     # check if first character is a letter between A-J
-    x = ord(coordinates[0])
-    print(x)
-
-    # check if second character is a number between 1-10
-    # slice from 1 to end
+    if len(coordinates) < 2 or not coordinates.isalpha():
+        return False
+    x_coord = convert_coordinates(coordinates[0])
+    y_coord = int(coordinates[1:])
+    if x_coord > 10 or x_coord < 1:
+        return False
+    if y_coord > 10 or y_coord < 1:
+        return False
     return True
+
+
+def convert_coordinates(coordinate):
+    """
+    Converts co-ordinates to corresponding numerical value
+    """
+    return ord(coordinate.upper()) - 64
+
 
 def run_game():
     """
