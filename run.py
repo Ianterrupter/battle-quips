@@ -57,7 +57,6 @@ class Battlequips():
         for j in range(self.grid_size):
             print(f"| {j+1} ", end='')
         print("| ")
-        # print((7*5+9)*"-")
 
         # Other rows
         for i in range(self.grid_size):
@@ -65,15 +64,12 @@ class Battlequips():
             for j in range(self.grid_size):
                 print(f"| {self.board[i][j]} ", end='')
             print("| ")
-            # print((7*5+9)*"-")
 
 
 def start_battlequips():
     """
     Starts BattleQuips game
     """
-    # TODO: add feature to ask user for grid size and number of ships
-
     battlequips_game = Battlequips(10, 5, get_ship_coords())
     battlequips_game.print_board()
     quotes = get_quips()
