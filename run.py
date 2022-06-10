@@ -87,7 +87,6 @@ def start_battlequips():
         if validator(coordinates):
             if coordinates.upper() in battlequips_game.ship_coords:
                 battlequips_game.update_board(coordinates, "X")
-                print(battlequips_game.ship_coords)
                 battlequips_game.ship_coords.remove(coordinates.upper())
                 battlequips_game.life = 10
                 print("Hit! As someone wise once said...")
