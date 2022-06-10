@@ -1,4 +1,5 @@
 import gspread
+import random
 from google.oauth2.service_account import Credentials
 
 
@@ -75,7 +76,7 @@ def start_battlequips():
 
     battlequips_game = Battlequips(10, 5, get_ship_coords())
     battlequips_game.print_board()
-    # get quips
+    quotes = get_quips()
 
     while battlequips_game.life > 0:
         if len(battlequips_game.ship_coords) == 0:
@@ -89,7 +90,9 @@ def start_battlequips():
                 print(battlequips_game.ship_coords)
                 battlequips_game.ship_coords.remove(coordinates.upper())
                 battlequips_game.life = 10
-                print("Hit! Keep firing!")
+                print("Hit! As someone wise once said...")
+                print(f"{quotes[random.randint(0, 24)]}")
+                print("Keep firing!")
                 # print a quip
             else:
                 battlequips_game.life = battlequips_game.life - 1
@@ -117,6 +120,13 @@ def get_ship_coords():
     for coords in data:
         all_coords += coords.split(",")
     return all_coords
+
+
+def get_quips():
+    """
+    Retrieves quotes from Google Sheets
+    """
+    return quips.col_values(2) 
 
 
 def validator(coordinates):
