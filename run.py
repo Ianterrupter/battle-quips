@@ -93,7 +93,6 @@ def start_battlequips():
                 print("Hit! As someone wise once said...")
                 print(f"{quotes[random.randint(0, 24)]}")
                 print("Keep firing!")
-                # print a quip
             else:
                 battlequips_game.life = battlequips_game.life - 1
                 battlequips_game.update_board(coordinates, "O")
@@ -113,13 +112,12 @@ def get_ship_coords():
     Retrieves ship co-ordinates from Google Sheets
     """
     data = quips.col_values(3)
-
-    # get random ship values in sheet (pick 5) (need to update google sheets)
-    # remove duplicate coordinates
+    listnum = list(range(0, 24))
+    random.shuffle(listnum)
     all_coords = []
-    for coords in data:
-        all_coords += coords.split(",")
-    return all_coords
+    for i in range(5):
+        all_coords += data[listnum[i]].split(",")
+    return list(dict.fromkeys(all_coords))
 
 
 def get_quips():
@@ -133,7 +131,6 @@ def validator(coordinates):
     """
     Validates co-ordinates
     """
-    # check if first character is a letter between A-J
     if len(coordinates) < 2 or not coordinates.isalnum():
         return False
     x_coord = convert_coordinates(coordinates[0])
