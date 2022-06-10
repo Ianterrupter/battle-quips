@@ -2,6 +2,21 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 
+SCOPE = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive.file",
+        "https://www.googleapis.com/auth/drive"
+        ]
+
+CREDS = Credentials.from_service_account_file("creds.json")
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open("battle_quips")
+
+quips = SHEET.worksheet("quips")
+scoreboard = SHEET.worksheet("scoreboard")
+
+
 class Battlequips():
     """
     Creates an instance of BattleQuips game
@@ -60,9 +75,11 @@ def start_battlequips():
 
     battlequips_game = Battlequips(10, 5, get_ship_coords())
     battlequips_game.print_board()
+    # get quips
 
     while battlequips_game.life > 0:
         if len(battlequips_game.ship_coords) == 0:
+            scoreboard.update('B2', int(scoreboard.acell('B2').value) + 1)
             print("Well done! You've sunk all the ships!")
             break
         coordinates = input("What co-ordinates would you like to attack? (e.g. B3, J7) ")
@@ -73,6 +90,7 @@ def start_battlequips():
                 battlequips_game.ship_coords.remove(coordinates.upper())
                 battlequips_game.life = 10
                 print("Hit! Keep firing!")
+                # print a quip
             else:
                 battlequips_game.life = battlequips_game.life - 1
                 battlequips_game.update_board(coordinates, "O")
@@ -80,34 +98,26 @@ def start_battlequips():
             battlequips_game.print_board()
         else:
             print("Oops! Invalid values - please choose between A1-J10.")
-    if battlequips_game.life == 0: 
+    if battlequips_game.life == 0:
+        scoreboard.update('A2', int(scoreboard.acell('A2').value) + 1)
         print("Uh-oh! You're out of lives. Please start again.")
+    print(f"Player score: {scoreboard.acell('B2').value}, " +
+          f"Computer score: {scoreboard.acell('A2').value}")
 
 
 def get_ship_coords():
     """
     Retrieves ship co-ordinates from Google Sheets
     """
-    SCOPE = [
-        "https://www.googleapis.com/auth/spreadsheets",
-        "https://www.googleapis.com/auth/drive.file",
-        "https://www.googleapis.com/auth/drive"
-        ]
-
-    CREDS = Credentials.from_service_account_file("creds.json")
-    SCOPED_CREDS = CREDS.with_scopes(SCOPE)
-    GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-    SHEET = GSPREAD_CLIENT.open("battle_quips")
-
-    quips = SHEET.worksheet("quips")
-
     data = quips.col_values(3)
 
+    # get random ship values in sheet (pick 5) (need to update google sheets)
+    # remove duplicate coordinates
     all_coords = []
     for coords in data:
         all_coords += coords.split(",")
     return all_coords
-    
+
 
 def validator(coordinates):
     """
@@ -160,7 +170,6 @@ def run_game():
         if start_game.lower() == "n":
             is_game_running = False
         elif start_game.lower() == "y":
-            is_game_running = False
             start_battlequips()
         else:
             print("Please enter a valid answer...")
