@@ -23,7 +23,7 @@ class Battlequips():
     """
     Creates an instance of BattleQuips game
     """
-    life = 10
+    life = 15
     board = [[" "] * 10 for i in range(10)]
 
     def __init__(self, grid_size, num_ships, ship_coords):
@@ -71,7 +71,10 @@ def start_battlequips():
     """
     Starts BattleQuips game
     """
+    clear()
     battlequips_game = Battlequips(10, 5, get_ship_coords())
+    battlequips_game.board = [[" "] * 10 for i in range(10)]
+    print("\n\n")
     battlequips_game.print_board()
     quotes = get_quips()
 
@@ -81,19 +84,19 @@ def start_battlequips():
             print("Well done! You've sunk all the ships!")
             break
         coordinates = input("What co-ordinates would you like to attack? (e.g. B3, J7) \n")
-        clear()
         if validator(coordinates):
+            clear()
             if coordinates.upper() in battlequips_game.ship_coords:
                 battlequips_game.update_board(coordinates, "X")
                 battlequips_game.ship_coords.remove(coordinates.upper())
-                battlequips_game.life = 10
+                battlequips_game.life = 15
                 print("Hit! As someone wise once said...")
                 print(f"{quotes[random.randint(0, 24)]}")
                 print("Keep firing!")
             else:
                 battlequips_game.life = battlequips_game.life - 1
                 battlequips_game.update_board(coordinates, "O")
-                print(f"Miss! Try again. You have {battlequips_game.life} attempt(s) left.")
+                print(f"Miss!\nTry again.\nYou have {battlequips_game.life} attempt(s) left.")
             battlequips_game.print_board()
         else:
             print("Oops! Invalid values - please choose between A1-J10.")
@@ -152,7 +155,6 @@ def run_game():
     """
     Start screen for Battlequips.
     """
-    print("Hello! Welcome to BattleQuips!")
     print("  ____        _   _   _      \n" +
           " |  _ \      | | | | | |     \n" +
           " | |_) | __ _| |_| |_| | ___ \n" +
@@ -166,6 +168,10 @@ def run_game():
           "  \___\_\\__,_ |_|  ._/|___/  \n" +
           "                | |          \n" +
           "                |_|          ")
+    print("Hello! Welcome to BattleQuips!")
+    print("You have 15 attempts to sink 5 ships of varying sizes...")
+    print("If you get a hit, your attempts will reset,")
+    print("revealing a quip from a historical figure.")
 
     is_game_running = True
 
@@ -180,11 +186,12 @@ def run_game():
 
 
 def clear():
-  
+    """
+    Function for clearing screen, sourced from: https://www.geeksforgeeks.org/clear-screen-python/.
+    """
     # for windows
     if name == 'nt':
         _ = system('cls')
-  
     # for mac and linux(here, os.name is 'posix')
     else:
         _ = system('clear')
