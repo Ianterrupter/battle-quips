@@ -1,3 +1,4 @@
+from os import system, name
 import random
 import gspread
 from google.oauth2.service_account import Credentials
@@ -80,6 +81,7 @@ def start_battlequips():
             print("Well done! You've sunk all the ships!")
             break
         coordinates = input("What co-ordinates would you like to attack? (e.g. B3, J7) \n")
+        clear()
         if validator(coordinates):
             if coordinates.upper() in battlequips_game.ship_coords:
                 battlequips_game.update_board(coordinates, "X")
@@ -175,6 +177,17 @@ def run_game():
             start_battlequips()
         else:
             print("Please enter a valid answer...")
+
+
+def clear():
+  
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+  
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')
 
 
 run_game()
