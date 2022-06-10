@@ -1,5 +1,5 @@
-import gspread
 import random
+import gspread
 from google.oauth2.service_account import Credentials
 
 
@@ -83,7 +83,7 @@ def start_battlequips():
             scoreboard.update('B2', int(scoreboard.acell('B2').value) + 1)
             print("Well done! You've sunk all the ships!")
             break
-        coordinates = input("What co-ordinates would you like to attack? (e.g. B3, J7) ")
+        coordinates = input("What co-ordinates would you like to attack? (e.g. B3, J7) \n")
         if validator(coordinates):
             if coordinates.upper() in battlequips_game.ship_coords:
                 battlequips_game.update_board(coordinates, "X")
@@ -173,7 +173,7 @@ def run_game():
     is_game_running = True
 
     while is_game_running:
-        start_game = input("Would you like to play a game? (Y/N) ")
+        start_game = input("Would you like to play a game? (Y/N) \n")
         if start_game.lower() == "n":
             is_game_running = False
         elif start_game.lower() == "y":
