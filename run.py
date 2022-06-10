@@ -83,7 +83,8 @@ def start_battlequips():
             scoreboard.update('B2', int(scoreboard.acell('B2').value) + 1)
             print("Well done! You've sunk all the ships!")
             break
-        coordinates = input("What co-ordinates would you like to attack? (e.g. B3, J7) \n")
+        coordinates = input("What co-ordinates would you like to attack?" +
+                            " (e.g. B3, J7) \n")
         if validator(coordinates):
             clear()
             if coordinates.upper() in battlequips_game.ship_coords:
@@ -96,7 +97,8 @@ def start_battlequips():
             else:
                 battlequips_game.life = battlequips_game.life - 1
                 battlequips_game.update_board(coordinates, "O")
-                print(f"Miss!\nTry again.\nYou have {battlequips_game.life} attempt(s) left.")
+                print(f"Miss!\nTry again.\nYou have {battlequips_game.life}" +
+                      " attempt(s) left.")
             battlequips_game.print_board()
         else:
             print("Oops! Invalid values - please choose between A1-J10.")
@@ -124,7 +126,7 @@ def get_quips():
     """
     Retrieves quotes from Google Sheets
     """
-    return quips.col_values(2) 
+    return quips.col_values(2)
 
 
 def validator(coordinates):
@@ -135,7 +137,7 @@ def validator(coordinates):
         return False
     x_coord = convert_coordinates(coordinates[0])
     if not coordinates[1:].isnumeric():
-        return False 
+        return False
     y_coord = int(coordinates[1:])
     if x_coord > 10 or x_coord < 1:
         return False
@@ -187,7 +189,8 @@ def run_game():
 
 def clear():
     """
-    Function for clearing screen, sourced from: https://www.geeksforgeeks.org/clear-screen-python/.
+    Function for clearing screen
+    Sourced from: https://www.geeksforgeeks.org/clear-screen-python/.
     """
     # for windows
     if name == 'nt':
