@@ -39,6 +39,7 @@ The user wins when all the computer's ships are sunk. Otherwise, the computer wi
    - You cannot enter co-ordinates outside of the grid
    - You must enter a string in alphanumeric grid format
    - You cannot enter special characters
+   
    ![Hero Image](./assets/images/invalid.png)
  - Utilized OOP 
  
