@@ -9,6 +9,7 @@ Users will try to beat the computer by sinking all 5 ships, with each hit reveal
 
 
 ## How to play
+
 BattleQuips is based on the classic pen-and-paper game. You can read about it here on [Wikipedia](https://en.wikipedia.org/wiki/Battleship_(game)).
 
 In this version, the player will be asked if they want to play a game. The board will then be generated with random ship placements from a Google Sheets spreadsheet. They will then choose co-ordinates to attack, e.g. A2, B5 etc.
@@ -28,13 +29,17 @@ The user wins when all the computer's ships are sunk. Otherwise, the computer wi
  - Random board generation
    - Ship placements retrieved from list of random co-ordinates on Google Sheets
    - The user cannot see where the computer's ship placements are
+   
+   ![Hero Image](./assets/images/board.png)
  - Play against the computer
  - Accepts user input
+ ![Hero Image](./assets/images/quip.png)
  - Retrieves and updates scoreboard from Google Sheets.
  - Validates user input
    - You cannot enter co-ordinates outside of the grid
    - You must enter a string in alphanumeric grid format
    - You cannot enter special characters
+   ![Hero Image](./assets/images/invalid.png)
  - Utilized OOP 
  
 
@@ -43,6 +48,12 @@ The user wins when all the computer's ships are sunk. Otherwise, the computer wi
 - Allow the user to select difficulty 
   - Allow user to change number of attempts
   - Allow user to pick number and size of ships.
+
+## Game Design
+
+I created the below flow chart in Lucidchart. This helped me design the game logically and keep flow iteration user friendly.
+
+![Flow Chart](./assets/images/battlequips.jpeg)
 
 ## Data Model
 
